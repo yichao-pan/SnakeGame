@@ -8,7 +8,7 @@ class SnakePart(Drawable):
     def __init__(self, pos, grid_size):
         Drawable.__init__(self)
         self.pos = pos
-        self.prev_pos = pos
+        self.prev_pos = (pos[0], pos[1] - grid_size)
 
         # self.next = next
         self.size = grid_size

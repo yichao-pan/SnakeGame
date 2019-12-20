@@ -1,6 +1,5 @@
 from Snake import Snake
 from SnakeHead import *
-from Const import *
 from Map import *
 
 
@@ -19,9 +18,7 @@ grid_size = 20
 game_map = Map((WIN_WIDTH, WIN_HEIGHT), grid_size)
 
 entity_list = []
-player = Snake(SnakeHead(((WIN_WIDTH + grid_size) / 2, (WIN_HEIGHT + grid_size) / 2),
-                         grid_size, 1),
-               (WIN_WIDTH, WIN_HEIGHT))
+player = Snake((WIN_WIDTH, WIN_HEIGHT), grid_size, 5)
 
 entity_list.append(player)
 
@@ -53,10 +50,14 @@ while run:
         update()
         update_counter = 0
 
+    if(player.check_collision()):
+        run = False
+
     win.fill((0, 0, 0))
     game_map.draw(win)
     for entity in entity_list:
         entity.draw(win)
+
 
     pygame.display.update()
     update_counter += 1
