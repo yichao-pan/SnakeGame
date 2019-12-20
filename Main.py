@@ -1,6 +1,12 @@
-import pygame
+from Snake import Snake
 from SnakeHead import *
 from Const import *
+from Map import *
+
+
+def update():
+    player.move()
+    player.add_part()
 
 pygame.init()
 
@@ -10,14 +16,20 @@ WIN_HEIGHT = 500
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 grid_size = 20
+game_map = Map((WIN_WIDTH, WIN_HEIGHT), grid_size)
 
 entity_list = []
-player = SnakeHead((int(WIN_WIDTH/2), int(WIN_HEIGHT/2)), grid_size, 1)
+player = Snake(SnakeHead(((WIN_WIDTH + grid_size) / 2, (WIN_HEIGHT + grid_size) / 2),
+                         grid_size, 1),
+               (WIN_WIDTH, WIN_HEIGHT))
+
 entity_list.append(player)
 
 clock = pygame.time.Clock()
-FPS = 30
-snake_len = 0
+FPS = 60
+GAMESPEED = 0.1
+update_counter = 0
+
 run = True
 while run:
     for event in pygame.event.get():
@@ -29,26 +41,25 @@ while run:
     x_move = 0
     y_move = 0
     if keys[pygame.K_LEFT]:
-        player.move_dir = 1
+        player.change_dir(1)
     if keys[pygame.K_RIGHT]:
-        player.move_dir = 3
+        player.change_dir(3)
     if keys[pygame.K_UP]:
-        player.move_dir = 2
+        player.change_dir(2)
     if keys[pygame.K_DOWN]:
-        player.move_dir = 4
+        player.change_dir(4)
 
-    player.move()
-
-    if(snake_len<20):
-        player.add_part()
-        snake_len += 1
+    if (update_counter == 1 / GAMESPEED):
+        update()
+        update_counter = 0
 
     win.fill((0, 0, 0))
+    game_map.draw(win)
     for entity in entity_list:
         entity.draw(win)
 
-
     pygame.display.update()
+    update_counter += 1
 
     clock.tick(FPS)
 
