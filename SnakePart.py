@@ -1,5 +1,4 @@
-from Drawable import Drawable
-from Const import Colors
+from Drawable import *
 import pygame
 
 
