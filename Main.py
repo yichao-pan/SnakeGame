@@ -19,7 +19,7 @@ def add_item():
         for s in player.snake_list:
             if (s.pos == item_pos):
                 valid_pos = False
-
+    print(item_pos)
     item_list.append(Item(item_pos, GRID_SIZE))
 
 
@@ -35,7 +35,8 @@ win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 game_map = Map((WIN_WIDTH, WIN_HEIGHT), GRID_SIZE)
 
 # set up player
-player = Snake((WIN_WIDTH, WIN_HEIGHT), GRID_SIZE, 100, 1)
+player = Snake((WIN_WIDTH, WIN_HEIGHT), GRID_SIZE, 100, speed=1, starting_length=3)
+next_dir = 0
 
 # set up items
 MAX_ITEMS = 3
@@ -60,21 +61,22 @@ while run:
 
     # movement
     keys = pygame.key.get_pressed()
-    x_move = 0
-    y_move = 0
     if keys[pygame.K_LEFT]:
-        player.change_dir(1)
+        next_dir = 1
     if keys[pygame.K_RIGHT]:
-        player.change_dir(3)
+        next_dir = 3
     if keys[pygame.K_UP]:
-        player.change_dir(2)
+        next_dir = 2
     if keys[pygame.K_DOWN]:
-        player.change_dir(4)
+        next_dir = 4
+
+    if (player.head_grid_align()):
+        player.change_dir(next_dir)
+        next_dir = 0
 
     if (update_counter == 1 / GAMESPEED):
         update_counter = 0
         player.move()
-        #player.add_part()
         # check if snake is touching itself
         if (player.check_collision()):
             run = False
@@ -90,7 +92,6 @@ while run:
         #     spawn_counter = 0
         #     if(len(item_list)<MAX_ITEMS):
         #         add_item()
-
 
     # draw
     win.fill((0, 0, 0))
