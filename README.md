@@ -4,4 +4,7 @@ Snake SNAKE SNAAAAAAAAAAAAAAAAAAAKE
 Snake in pygame
 
 Todo:
-- Pickupable objects
+- Fix issues with speed
+- Make the tail a triangle
+- Add ui
+- Fix bug where snake can go backwards
