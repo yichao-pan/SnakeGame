@@ -12,8 +12,8 @@ class Snake:
         self.speed = speed
 
         head = SnakeHead(
-            ((bounds[0] + grid_size) / 2,
-             (bounds[1] + grid_size) / 2),
+            [(bounds[0] + grid_size) / 2,
+             (bounds[1] + grid_size) / 2],
             self.speed,
             grid_size)
         self.snake_list = [head]
@@ -54,6 +54,11 @@ class Snake:
                 self.get_head().facing = new_dir
                 self.next_dir = 0
 
+    def update_facing(self):
+        for i in range(1, self.snake_len()):
+            self.snake_list[i].facing = self.snake_list[i].next_facing
+            self.snake_list[i].next_facing = self.snake_list[i-1].facing
+
     # move the snake
     def move(self):
         # move the head to new position
@@ -61,6 +66,7 @@ class Snake:
         # each following segment moves to the old position of the segment before it
         for i in range(1, self.snake_len()):
             self.snake_list[i].move(self.snake_list[i - 1].prev_pos)
+
 
     # check if the snake is colliding with itself
     def check_collision(self):
@@ -73,5 +79,10 @@ class Snake:
 
     # draw the snake
     def draw(self, screen):
-        for s in self.snake_list:
-            s.draw(screen)
+        for i in range(0, self.snake_len() - 1):
+            self.snake_list[i].draw(screen)
+        if(self.snake_len() >= 3):
+            self.snake_list[-1].draw_tail(screen)
+        else:
+            self.snake_list[-1].draw(screen)
+

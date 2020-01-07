@@ -10,9 +10,9 @@ def add_item():
     item_pos = (0, 0)
     while not valid_pos:
         # seed(42)
-        item_x_pos = randint(0, WIN_WIDTH / GRID_SIZE) * GRID_SIZE
-        item_y_pos = randint(0, WIN_HEIGHT / GRID_SIZE) * GRID_SIZE
-        item_pos = (item_x_pos, item_y_pos)
+        item_x_pos = randint(0, (WIN_WIDTH / GRID_SIZE)-1) * GRID_SIZE
+        item_y_pos = randint(0, (WIN_HEIGHT / GRID_SIZE)-1) * GRID_SIZE
+        item_pos = [item_x_pos, item_y_pos]
         valid_pos = True
 
         # check that the item did not spawn on top of a snake
@@ -32,10 +32,10 @@ GRID_SIZE = 20
 win = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 
 # set up map
-game_map = Map((WIN_WIDTH, WIN_HEIGHT), GRID_SIZE)
+game_map = Map([WIN_WIDTH, WIN_HEIGHT], GRID_SIZE)
 
 # set up player
-player = Snake((WIN_WIDTH, WIN_HEIGHT), GRID_SIZE, 100, speed=1, starting_length=3)
+player = Snake([WIN_WIDTH, WIN_HEIGHT], GRID_SIZE, 100, speed=1, starting_length=5)
 next_dir = 0
 
 # set up items
@@ -46,7 +46,7 @@ add_item()
 # set up clock
 clock = pygame.time.Clock()
 FPS = 60
-GAMESPEED = 0.1
+GAMESPEED = 0.01
 update_counter = 0
 spawn_counter = 0
 SPAWN_TIME = 10
@@ -77,6 +77,7 @@ while run:
     if (update_counter == 1 / GAMESPEED):
         update_counter = 0
         player.move()
+        player.update_facing()
         # check if snake is touching itself
         if (player.check_collision()):
             run = False

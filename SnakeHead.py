@@ -11,16 +11,16 @@ class SnakeHead(SnakePart):
         self.prev_pos = self.pos
         # left
         if (self.facing == 1):
-            self.pos = ((self.pos[0]-self.speed * self.size) % bounds[0], self.pos[1])
+            self.pos = [(self.pos[0]-self.speed * self.size) % bounds[0], self.pos[1]]
         # right
         if (self.facing == 3):
-            self.pos = ((self.pos[0]+self.speed * self.size) % bounds[0], self.pos[1])
+            self.pos = [(self.pos[0]+self.speed * self.size) % bounds[0], self.pos[1]]
         # up
         if (self.facing == 2):
-            self.pos = (self.pos[0], (self.pos[1]-self.speed * self.size) % bounds[1])
+            self.pos = [self.pos[0], (self.pos[1]-self.speed * self.size) % bounds[1]]
         # down
         if (self.facing == 4):
-            self.pos = (self.pos[0], (self.pos[1]+self.speed * self.size) % bounds[1])
+            self.pos = [self.pos[0], (self.pos[1]+self.speed * self.size) % bounds[1]]
 
     def draw(self, screen):
         self.draw_tongue(screen)
