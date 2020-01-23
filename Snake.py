@@ -10,10 +10,13 @@ class Snake:
         self.size = grid_size
         self.max_len = max_len
         self.speed = speed
+        self.starting_length = starting_length
+
+        dimensions = [bounds[0] / grid_size, bounds[1] / grid_size]
 
         head = SnakeHead(
-            [(bounds[0] + grid_size) / 2,
-             (bounds[1] + grid_size) / 2],
+            [self.size * (dimensions[0]//2),
+             self.size * (dimensions[1]//2)],
             self.speed,
             grid_size)
         self.snake_list = [head]
@@ -74,6 +77,7 @@ class Snake:
             # check if the head's position is overlapping with another segment
             if (self.get_head().pos == self.snake_list[i].pos):
                 print("Game Over")
+                print(f'Your score is {self.snake_len() - self.starting_length}')
                 return True
         return False
 

@@ -37,6 +37,7 @@ game_map = Map([WIN_WIDTH, WIN_HEIGHT], GRID_SIZE)
 # set up player
 player = Snake([WIN_WIDTH, WIN_HEIGHT], GRID_SIZE, 100, speed=1, starting_length=5)
 next_dir = 0
+turn = False
 
 # set up items
 MAX_ITEMS = 3
@@ -46,7 +47,7 @@ add_item()
 # set up clock
 clock = pygame.time.Clock()
 FPS = 60
-GAMESPEED = 0.01
+GAMESPEED = 0.1
 update_counter = 0
 spawn_counter = 0
 SPAWN_TIME = 10
@@ -61,20 +62,25 @@ while run:
 
     # movement
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_a] and turn == False:
         next_dir = 1
-    if keys[pygame.K_RIGHT]:
+        turn = True
+    if keys[pygame.K_d] and turn == False:
         next_dir = 3
-    if keys[pygame.K_UP]:
+        turn = True
+    if keys[pygame.K_w] and turn == False:
         next_dir = 2
-    if keys[pygame.K_DOWN]:
+        turn = True
+    if keys[pygame.K_s] and turn == False:
         next_dir = 4
+        turn = True
 
     if (player.head_grid_align()):
         player.change_dir(next_dir)
         next_dir = 0
 
-    if (update_counter == 1 / GAMESPEED):
+    if (update_counter > 1 / GAMESPEED):
+        turn = False
         update_counter = 0
         player.move()
         player.update_facing()
@@ -88,6 +94,8 @@ while run:
                 item_list.remove(i)
                 player.add_part()
                 add_item()
+                GAMESPEED *=1.02
+                print(GAMESPEED)
 
         # if(spawn_counter == SPAWN_TIME * FPS):
         #     spawn_counter = 0
